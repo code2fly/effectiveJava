@@ -32,7 +32,10 @@
      * it can be considered as an advtg since it encourages composition over inheritence.
      * is required for immutable types.
 
-
+   * ***Summary - static factories are preferable most of the times now, so avoid reflex to provide public constructors
+    without considering static factories first***
+    
+    
 ***
 
 ####Item 2 - Consider builder when faced with many constructor params.
@@ -51,4 +54,66 @@
   (***this makes client code easy to read and write , it also simulates named Optional params like found
   in Python and Scala***)
   * Builder pattern is well suited to class hierarchy i.e. abstract classes have 
-  abstract builders , concrete class have concrete builders .
+  abstract builders , concrete class have concrete builders.
+  * Builder have a slight advantage over constructor that it can have multiple var args since each var arg is 
+  related to its own method. also the same builder can be used to create multiple objects and the builder can
+  be tweaked before calling build method.
+  * DisAdv of builder is inorder to create object you must first create its builder (which can be sometimes costly as well
+  and impact performance.)
+  * ***Summary - better to use Builder pattern when class constructor or static factories has more than handful of 
+  of params, specially many optional or identical params. Client code is easy to read and write then Telescoping or JavaBeans***
+
+
+
+***
+
+####Item 3 - Enforce Singleton property with private constructor or an Enum type.
+
+  * Singleton is a simple class that can be instantiated only once.
+  * Singletons typically represent a stateless object (such as func or system component which is unique intrinsically ).
+  * they can be created 3 ways and each requires a private constructor and a static field to store the instance.
+  * using public static field, using static factory method, using single field Enum(most preferred approach)
+  * with the first 2 approach a privileged client can invoke private constructor reflectively ( **with the help of 
+  AccessibleObject.setAccessible** ) , a exception can also be thrown if asked against second construction.
+  * the Enum approach is best as it provides the serialization machinery for free (while the other 2 approaches need
+  to make this sure by making all fields transient and implementing readResolve method to return the only valid instance.)
+  * Enum approach cannot be used if singleton must extend a superclass other than Enum though it can be used if Enum has to 
+  implement an interface.
+ 
+ 
+
+***
+
+####Item 4 - Enforce Noninstantiability with a private constructor (static utility class) 
+
+  * for classes that contains group of static fields and static methods as in java.util.Collections (now since Java8 these
+  can also be put in interface.)
+  * this Noninstantiability can be achieved by making constructors private.
+
+  
+
+***
+ 
+####Item 5 - Prefer dependency injection to hardwiring resources.
+
+  * many classes depends on underlying resources and though people sometimes put those dependencies to a static utility
+  class or Singleton but these are not appropriate use of those classes.
+  * these approaches are not worth using because they assume there is only one impl of that type. (like dictionary but that is not 
+  the case for e.g. there can be different dictionary for different languages. ) 
+  * even testing these approaches which a special kind of impl(special dictionary ) would not be possible.
+  * ***Static utility classes and singletons are inappropriate for classes whose behaviour is parameterized/(gets effected by 
+  underlying resources) on an underlying resource***.
+  * DI can be achieved by passing the resources to the constructor while creating new instance.(hence multiple instances
+  of class is supported based on whichever instance is passed to the constructor)
+  * another variation is to pass a resource factory to a constructor , static factory or a builder. Supplier<T> is 
+  perfect for representing factories. 
+  * DI greatly improves flexibility and testability, it can clutter up large project with 1000's of dependency
+  but in those case dependency frameworks like spring, dagger or juice can be used.
+  * ***Summary -  do not use a singleton or static utility class to implement a class that depends on one or more underlying
+   resources whose behavior affects that of the class, and do not have the class create these resources directly 
+   (Instead, pass the resources, or factories to create them, into the constructor (or static factory or builder))***
+   
+
+***
+
+####Item 6 - Avoid creating unnecessary objects.
