@@ -1,0 +1,11 @@
+Êþº¾   7 &
+ 	  	  	  	   
+     name Ljava/lang/String; age I <init> ()V Code LineNumberTable <clinit> 
+SourceFile Person.java   raju 
+   
+   ! " 0****** from Person class, loaded successfully*** # $ % Person java/lang/Object java/lang/System out Ljava/io/PrintStream; java/io/PrintStream println (Ljava/lang/String;)V    	      
+       
+            1     *· *µ *
+µ ±              
+         %      	² ¶ ±       
+            

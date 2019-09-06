@@ -117,3 +117,41 @@
 ***
 
 ####Item 6 - Avoid creating unnecessary objects.
+
+  * it is often appropriate to reuse object rather than creating new one which is functionally equivalent(always reuse is faster).
+  but can be reused only if it is not immutable.
+  * unnecessary object creation can be avoided using static factory method over constructor on immutable classes.
+  * some object creation is much more expensive than others (so advisable to cache those). e.g. string.matches creates
+  Pattern object each time and after completion that object is ready for GC and creation of Pattern is expensive as it needs
+  to compile the regex (hence not recommended for repeated use in performance-critical situations).
+  ***to improve performance Pattern could be explicitly compiled as a immutable static field, and then used later*** 
+  * Another way to create unnecessary objects is autoboxing. though primitives and their boxed types have subtle symentic difference
+  but it is not so subtle performance difference.
+  * prefer Primitives to boxed Primitives and watch out for unintentional boxing.
+  * ***Summary - don't create a new object when you should reuse a existing one, later Ite, 50 gives a counterpoint to this
+  on defensive copying.***
+
+
+
+***
+
+
+#### Item 7 - Eliminate obsolete object references.
+
+* 
+
+
+***
+
+
+#### Item 8 - Avoid finalizers and cleaners.
+
+* 
+
+
+***
+
+
+#### Item 9 - Prefer try-with-resources over try-finally.
+
+* 
